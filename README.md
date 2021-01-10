@@ -13,9 +13,23 @@
 
 ## UML simplifié
 
-*dlb_Ship (player)*
+*dlb_Ship*
 - 
-- speed: float = 10f
+- initialSpeed: float
+- projectile: GameObject
+- projectileSpeed: float
+- fireRate: float
+- nextFire: float
+- rb: Rigibody2D
+- Start(): void
+- Update(): void
+- dlb_Move(): void
+- dlb_Fire(): void
+- dlb_Shoot(): void 
+
+*dlb_Player*
+- 
+- initialSpeed: float = 10f
 - drag: float = 1
 - thrust: float
 - projectile: GameObject
@@ -30,21 +44,28 @@
 - dlb_Fire(): void
 - dlb_Shoot(): void 
 
-*dlb_Bullet*
-- 
-- life: float = 3f
-- Update(): void
-
 *dlb_Intruder (ennemi)*
 - 
 - initialSpeed: float = 5.0f
 - speed: Vector2
 - points: int = 10
+- projectile: GameObject
+- projectileSpeed: float = 4f
+- fireRate: float = .25f
+- nextFire: float
 - rb: Rigidbody2D
 - gameManager:  GameManager
 - Start(): void
 - Update(): void
 - OnTriggerEnter2D(collision: Collider2D): void
+- dlb_Move(): void
+- dlb_Fire(): void
+- dlb_Shoot(): void 
+
+*dlb_Bullet*
+- 
+- life: float = 3f
+- Update(): void
 
 *dlb_Wave (vague d'ennemis)*
 - 
@@ -58,7 +79,7 @@
 *dlb_GameManager*
 - 
 - state : States
-- level: int
+- wave: int
 - score: int
 - lives: int
 - levelTxt: Text
@@ -97,6 +118,3 @@
 *dlb_NetworkManager*
 - 
 - 
-
-
-
