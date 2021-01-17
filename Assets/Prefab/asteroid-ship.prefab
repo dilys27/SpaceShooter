@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6460694695369221748}
   - component: {fileID: 6460694695369221749}
   - component: {fileID: 6460694695369221753}
-  - component: {fileID: 6460694695369221752}
+  - component: {fileID: 8024756414367329952}
   m_Layer: 0
   m_Name: asteroid-ship
   m_TagString: Player
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 864ca847bd0ab427f933383c2e2d55f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6460694695369221752
+--- !u!114 &8024756414367329952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

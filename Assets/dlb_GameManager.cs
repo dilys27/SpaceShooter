@@ -3,47 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class dlb_GameManager : MonoBehaviour
 {
 	public enum States
 	{
-		wait, play, levelup, dead
+		wait, play, nextWave, dead
 	}
 	public static States state;
 
-	int level;
+	int wave;
 	int score;
 	int lives;
 
-	public Text levelTxt;
+	public Text waveTxt;
 	public Text scoreTxt;
 	public Text livesTxt;
 
 	public Text messageTxt;
 
-
 	GameObject player;
-	public GameObject asteroid; // le grand prefab
+	public GameObject intruder; // le prefab
 	public GameObject boom;
-
 
 	Camera cam;
 	float height, width;
 
-
 	public GameObject waitToStart; // panel
-
 
 	public GameObject networkPanel;
 
 	NetworkManager networkManager;
+
+	public GameObject spawnArea;
+	float widthArea;
+	float xArea, yArea;
 
 
 	void Start()
 	{
 		networkManager = GetComponent<NetworkManager>();
 		networkPanel.gameObject.SetActive(true);
-
 
 		messageTxt.gameObject.SetActive(false);
 
@@ -53,7 +52,6 @@ public class GameManager : MonoBehaviour
 		height = cam.orthographicSize;
 		width = height * cam.aspect;
 
-
 		waitToStart.gameObject.SetActive(true);
 		int highscore = PlayerPrefs.GetInt("highscore");
 		if (highscore > 0)
@@ -61,6 +59,10 @@ public class GameManager : MonoBehaviour
 			messageTxt.text = "highscore: " + highscore;
 			messageTxt.gameObject.SetActive(true);
 		}
+
+		widthArea = spawnArea.GetComponent<BoxCollider2D>().bounds.size.x;
+		xArea = spawnArea.transform.position.x;
+		yArea = spawnArea.transform.position.y;
 
 		state = States.wait;
 	}
@@ -80,38 +82,38 @@ public class GameManager : MonoBehaviour
 		}
 		// lancer une partie
 		InitGame();
-		LoadLevel();
+		LoadWave();
 		UpdateTexts();
-	}
-
-
-
-	void LoadLevel()
-	{
-		state = States.play;
-
-		// instancier 3 asteroids (selon le niveau)
-		// - savoir ce qu'est un asteroid (public ...)
-		// - faire une boucle 1 à 3
-		//       instancier un asteroid : dans les limites de l'écran
-		for (int i = 0; i < 2 + level; i++)
-		{
-			float x = Random.Range(-width, width);
-			float y = Random.Range(-height, height);
-			Instantiate(asteroid, new Vector2(x, y), Quaternion.identity);
-		}
 	}
 
 	void InitGame()
 	{
-		level = 1;
+		wave = 1;
 		score = 0;
 		lives = 5;
 	}
 
+	void LoadWave()
+	{
+		state = States.play;
+
+		// instancier 3 ennemis (selon la vague: 2 + wave)
+		// - savoir ce qu'est un ennemi (public ...)
+		// - faire une boucle 1 à 3
+		//   instancier un ennemi : dans les limites de la spawn area (en dehors de l'écran)
+		
+		for (int i = 0; i < 3; i++)
+		{
+			float x = xArea + Random.Range(-widthArea/2, widthArea/2);
+			float y = yArea;
+			Instantiate(intruder, new Vector2(x, y), Quaternion.identity);
+		}
+		
+	}
+
 	void UpdateTexts()
 	{
-		levelTxt.text = "level: " + level;
+		waveTxt.text = "wave: " + wave;
 		scoreTxt.text = "score: " + score;
 		livesTxt.text = "lives: " + lives;
 	}
@@ -127,32 +129,32 @@ public class GameManager : MonoBehaviour
 	{
 		if (state == States.play)
 		{
-			EndOfLevel();
+			EndOfWave();
 		}
 	}
 
 
-	void EndOfLevel()
+	void EndOfWave()
 	{
 		GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
 		if (enemys.Length == 0)
 		{
-			StartCoroutine(LevelUp());
+			StartCoroutine(NextWave());
 		}
 	}
 
-	IEnumerator LevelUp()
+	IEnumerator NextWave()
 	{
-		state = States.levelup;
-		// afficher message "level up"
-		messageTxt.text = "level up";
+		state = States.nextWave;
+		// afficher message "Next Wave"
+		messageTxt.text = "Next Wave";
 		messageTxt.gameObject.SetActive(true);
 		// marquer une pause
 		yield return new WaitForSecondsRealtime(3f);
 		// cacher le message
 		messageTxt.gameObject.SetActive(false);
-		level += 1;
-		LoadLevel();
+		wave += 1;
+		LoadWave();
 		UpdateTexts();
 	}
 

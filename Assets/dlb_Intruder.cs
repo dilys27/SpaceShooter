@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Asteroids : MonoBehaviour
+public class dlb_Intruder : MonoBehaviour
 {
-	readonly float initialSpeed = 5.0f;
+	readonly float initialSpeed = 0f;
 	Vector2 speed;
 
 	readonly float initialRotation = 100f;
@@ -13,17 +13,14 @@ public class Asteroids : MonoBehaviour
 	public int points = 10;
 	public GameObject[] divisions;
 
-
-
 	Rigidbody2D rb;
 
-	GameManager gameManager;
+	dlb_GameManager gameManager;
 
 
 	void Start()
 	{
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
+		gameManager = GameObject.Find("GameManager").GetComponent<dlb_GameManager>();
 
 		rotation = Random.Range(-initialRotation, initialRotation);
 		// déterminer la vitesse x / y

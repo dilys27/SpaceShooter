@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ship : MonoBehaviour
+public class dlb_Player : MonoBehaviour
 {
 	// accélération / décélération
 	readonly float speed = 10f;
-	readonly float drag = 1; // résistance
-	float thrust; // poussée 
-
-	// rotation
-	readonly float rotationSpeed = 150f;
-	float rotation;
+	//readonly float drag = 1; // résistance
+	float moveHorizontal; // mouvement horizontal
 
 	// pouvoir tirer
 	public GameObject projectile;
@@ -21,21 +17,19 @@ public class Ship : MonoBehaviour
 	readonly float fireRate = .25f;
 	float nextFire;
 
-
 	Rigidbody2D rb;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		rb.drag = drag;
+		//rb.drag = drag;
 	}
 
 	void Update()
 	{
-		if (GameManager.state == GameManager.States.play)
+		if (dlb_GameManager.state == dlb_GameManager.States.play)
 		{
 			Move();
-			Turn();
 			Fire();
 		}
 	}
@@ -56,27 +50,26 @@ public class Ship : MonoBehaviour
 		bullet.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(0, projectileSpeed, 0);
 	}
 
-
-
-
-	void Turn()
+	/*void Turn()
 	{
 		rotation = Input.GetAxisRaw("Horizontal");
 		transform.Rotate(0, 0, rotation * Time.deltaTime * rotationSpeed * -1);
-	}
+	}*/
 
 	void Move()
 	{
-		thrust = Input.GetAxisRaw("Vertical");
+		moveHorizontal = Input.GetAxis("Horizontal");
+
+		/*thrust = Input.GetAxisRaw("Vertical");
 		if (thrust < 0)
 		{
 			thrust = 0; // rb.drag += Mathf.Abs(thrust);
-		}
+		}*/
 	}
 
 	private void FixedUpdate()
 	{
-		Vector3 force = transform.TransformDirection(0, thrust * speed, 0);
+		Vector3 force = transform.TransformDirection(-moveHorizontal * speed, 0, 0);
 		rb.AddForce(force);
 	}
 

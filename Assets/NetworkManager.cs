@@ -102,12 +102,6 @@ public class NetworkManager : MonoBehaviour
 		}
 	}
 
-
-
-
-
-
-
 	public void LoadScores()
 	{
 		StartCoroutine(LoadScoresFromNetwork());

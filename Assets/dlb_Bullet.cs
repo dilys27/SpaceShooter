@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class dlb_Bullet : MonoBehaviour
 {
-	float life = 3f;
+	float dlb_life = 5f;
 
 	void Update()
 	{
-		life -= Time.deltaTime;
-		if (life <= 0)
+		dlb_life -= Time.deltaTime;
+		if (dlb_life <= 0)
 		{
 			Destroy(gameObject);
 		}
