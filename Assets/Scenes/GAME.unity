@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 303490703}
   - component: {fileID: 303490702}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Play
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.48998755, g: 0.7264151, b: 0.5165883, a: 1}
+  m_Color: {r: 0.735849, g: 0.24644002, b: 0.24644002, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -433,7 +433,7 @@ MonoBehaviour:
   scoreTxt: {fileID: 924469459}
   livesTxt: {fileID: 1829044049}
   messageTxt: {fileID: 666646796}
-  asteroid: {fileID: 3782338015202311802, guid: 35afefbbedc954f7b867b8d2acaaa265, type: 3}
+  intruder: {fileID: 3782338015202311802, guid: 35afefbbedc954f7b867b8d2acaaa265, type: 3}
   boom: {fileID: 8397896712695084404, guid: dea48edaa0f5e43d4808fd47f6430c1f, type: 3}
   waitToStart: {fileID: 941066885}
   networkPanel: {fileID: 893998366}
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -814,7 +814,7 @@ GameObject:
   - component: {fileID: 885822856}
   - component: {fileID: 885822855}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -829,14 +829,14 @@ RectTransform:
   m_GameObject: {fileID: 885822853}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.21, y: 0.21, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 941066886}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000038147, y: 102}
+  m_AnchoredPosition: {x: -0.0000038147, y: 74}
   m_SizeDelta: {x: 887.9735, y: 264}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &885822855
@@ -859,7 +859,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c5e6958fe5cee4cb1a576d9f35c38f12, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b4866d4c46a2c495f992e9e85f74705f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -989,7 +989,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.00000080466, y: -24.9}
+  m_AnchoredPosition: {x: -0.00000080466, y: -24.900024}
   m_SizeDelta: {x: 103.28299, y: 34.256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &924469459
@@ -1224,7 +1224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 51.80699, y: -24.899994}
+  m_AnchoredPosition: {x: 51.807007, y: -24.899963}
   m_SizeDelta: {x: 86.6846, y: 34.256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1132929506
@@ -1633,7 +1633,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -56.609, y: -24.9}
+  m_AnchoredPosition: {x: -56.60901, y: -24.900024}
   m_SizeDelta: {x: 92.6887, y: 34.256}
   m_Pivot: {x: 0.49999997, y: 0.49999994}
 --- !u!114 &1829044049
@@ -1823,7 +1823,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6460694695369221746, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_Name
-      value: asteroid-ship
+      value: player-ship
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_RootOrder
@@ -1839,23 +1839,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1.8794417e-11
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0043395003
+      value: -0.0015406839
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.000004377211
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.000000006743991
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.9999906
+      value: 0.9999988
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1863,12 +1863,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -0.001
       objectReference: {fileID: 0}
     - target: {fileID: 6460694695369221750, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -179.503
+      value: 180.177
       objectReference: {fileID: 0}
+    - target: {fileID: 6460694695369221751, guid: 56032969642e246248597484589755fa, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3fed520ede4b482e95f27b026056164, type: 3}
     - target: {fileID: 6460694695369221753, guid: 56032969642e246248597484589755fa, type: 3}
       propertyPath: m_Enabled
       value: 1

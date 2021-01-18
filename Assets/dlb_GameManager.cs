@@ -101,7 +101,7 @@ public class dlb_GameManager : MonoBehaviour
 		// - savoir ce qu'est un ennemi (public ...)
 		// - faire une boucle 1 à 3
 		//   instancier un ennemi : dans les limites de la spawn area (en dehors de l'écran)
-		
+
 		for (int i = 0; i < 3; i++)
 		{
 			float x = xArea + Random.Range(-widthArea/2, widthArea/2);

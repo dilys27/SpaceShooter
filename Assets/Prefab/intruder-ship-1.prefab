@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3782338015202311807}
   - component: {fileID: 3782338015202311804}
   m_Layer: 0
-  m_Name: asteroid-rock-1
+  m_Name: intruder-ship-1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b482f643759384d8a90996960f07128b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4000cc67d699c469eb84d53be595b6c4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -124,7 +124,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.95, y: 2.25}
+    oldSize: {x: 0.94, y: 1.48}
     newSize: {x: 1.95, y: 2.25}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -282,6 +282,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: 10
-  divisions:
-  - {fileID: 6836080450580951186, guid: 7662793c541324975bfe8ac53ecd3808, type: 3}
-  - {fileID: 4812088604890352689, guid: 86fa8c3c4d1194dc5bf1672128b1615c, type: 3}

@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class dlb_Player : MonoBehaviour
 {
-	// accélération / décélération
 	readonly float speed = 10f;
+	float moveHorizontal;
 	//readonly float drag = 1; // résistance
-	float moveHorizontal; // mouvement horizontal
 
 	// pouvoir tirer
 	public GameObject projectile;
@@ -18,6 +17,8 @@ public class dlb_Player : MonoBehaviour
 	float nextFire;
 
 	Rigidbody2D rb;
+
+	dlb_GameManager gameManager;
 
 	void Start()
 	{
@@ -58,7 +59,7 @@ public class dlb_Player : MonoBehaviour
 
 	void Move()
 	{
-		moveHorizontal = Input.GetAxis("Horizontal");
+		moveHorizontal = Input.GetAxisRaw("Horizontal");
 
 		/*thrust = Input.GetAxisRaw("Vertical");
 		if (thrust < 0)
@@ -73,5 +74,14 @@ public class dlb_Player : MonoBehaviour
 		rb.AddForce(force);
 	}
 
+    void OnTriggerEnter2D(Collider2D collision)
+	{
+        if (collision.tag == "BulletEnemy")
+		{
+			// détruire la bullet
+			Destroy(collision.gameObject);
+			gameManager.KillPlayer();
+		}
+	}
 
 }

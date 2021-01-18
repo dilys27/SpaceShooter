@@ -4,45 +4,46 @@ using UnityEngine;
 
 public class dlb_Intruder : MonoBehaviour
 {
-	readonly float initialSpeed = 0f;
-	Vector2 speed;
-
-	readonly float initialRotation = 100f;
-	float rotation;
-
 	public int points = 10;
-	public GameObject[] divisions;
+	int life = 3;
+
+    float maxPosX, maxPosY;
+	float minPosX, minPosY;
+	readonly float initialSpeed = 3f;
+	Vector2 speed;
+	//readonly float initialRotation = 100f;
+	//float rotation;
 
 	Rigidbody2D rb;
 
 	dlb_GameManager gameManager;
 
+	Camera cam;
+	float height, width;
 
 	void Start()
 	{
 		gameManager = GameObject.Find("GameManager").GetComponent<dlb_GameManager>();
 
-		rotation = Random.Range(-initialRotation, initialRotation);
+		cam = Camera.main;
+		height = cam.orthographicSize;
+		width = height * cam.aspect;
+
 		// déterminer la vitesse x / y
-		float x = Random.Range(-initialSpeed, initialSpeed);
-		float y = Random.Range(-initialSpeed, initialSpeed);
+		float x = Random.Range(0, initialSpeed);
+		float y = Random.Range(0, initialSpeed);
 		speed = new Vector2(x, y);
 
-		// appliquer la vélocité
 		rb = GetComponent<Rigidbody2D>();
-		rb.velocity = speed;
 	}
 
-	void Update()
+	private void FixedUpdate()
 	{
-		rb.velocity = speed;
-		transform.Rotate(Vector3.forward * rotation * Time.deltaTime);
+		StartCoroutine(dlb_Move());
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		// Bullet  Player  Enemy
-
 		if (collision.tag == "Player")
 		{
 			gameManager.KillPlayer();
@@ -51,18 +52,34 @@ public class dlb_Intruder : MonoBehaviour
 		{
 			// détruire la bullet
 			Destroy(collision.gameObject);
-			// destruction = asteroid initial
-			Destroy(gameObject);
-			// division    = potentiel
-			foreach (GameObject enemy in divisions)
+			// destruction
+			if(life>0)
 			{
-				Instantiate(enemy, transform.position, Quaternion.identity);
+				life -= 1;
+			}else{
+				Destroy(gameObject);
 			}
 			// score
 			gameManager.AddScore(points);
 		}
+	}
 
-
+	IEnumerator dlb_Move()
+	{
+		if(rb.position.y >= -height){
+			GetComponent<dlb_BlockScreen>().enabled = true;
+		} else {
+			yield return new WaitForSecondsRealtime(1f);
+			rb.velocity = speed;
+			//rb.MovePosition(rb.position + speed * Time.fixedDeltaTime);
+			Vector3 force = transform.TransformDirection(0, 0.5f* speed.y * Time.deltaTime, 0);
+			rb.AddForce(force);
+		}
+		//transform.Translate(Vector2.up * speed.y * Time.deltaTime);
+		//rb.velocity = speed;
+		//Vector3 force = transform.TransformDirection(0, initialSpeed * Time.deltaTime, 0);
+		//rb.AddForce(force);
+		//rb.MovePosition(rb.position + speed * Time.fixedDeltaTime);
 	}
 
 
