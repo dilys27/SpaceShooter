@@ -13,20 +13,6 @@
 
 ## UML simplifié
 
-*dlb_Ship*
-- 
-- initialSpeed: float
-- projectile: GameObject
-- projectileSpeed: float
-- fireRate: float
-- nextFire: float
-- rb: Rigibody2D
-- Start(): void
-- Update(): void
-- dlb_Move(): void
-- dlb_Fire(): void
-- dlb_Shoot(): void 
-
 *dlb_Player*
 - 
 - initialSpeed: float = 10f
@@ -66,11 +52,6 @@
 - 
 - life: float = 3f
 - Update(): void
-
-*dlb_Wave (vague d'ennemis)*
-- 
-- nb: int
--  
 
 *dlb_Capsule*
 - 
