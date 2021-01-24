@@ -1,12 +1,12 @@
-﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-using System.Collections;
 
-public class NetworkManager : MonoBehaviour
+public class dlb_NetworkManager : MonoBehaviour
 {
-
 	[Serializable]
 	public struct Scores
 	{
@@ -71,9 +71,6 @@ public class NetworkManager : MonoBehaviour
 		PlayerPrefs.SetString("player-Pseudo", playerPseudo);
 	}
 
-
-
-
 	public void SendScore(int score)
 	{
 		StartCoroutine(SendScoresToNetwork(score));
@@ -91,7 +88,7 @@ public class NetworkManager : MonoBehaviour
 		UnityWebRequest request = UnityWebRequest.Post(URL_REST_API, form);
 		// attendre
 		yield return request.SendWebRequest();
-		if (request.isNetworkError || request.isHttpError)
+		if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
 		{
 			Debug.Log("Error: " + request.error);
 			leaderboard.text = "Network Error - no Leaderboard";
@@ -116,7 +113,7 @@ public class NetworkManager : MonoBehaviour
 		yield return request.SendWebRequest();
 
 		// si erreur 
-		if (request.isNetworkError || request.isHttpError)
+		if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
 		{
 			Debug.Log("Error: " + request.error);
 			leaderboard.text = "Network Error - no Leaderboard";
@@ -124,8 +121,8 @@ public class NetworkManager : MonoBehaviour
 		else
 		{
 			string json = request.downloadHandler.text;
-			print(json);
-			//  leaderboard.text = json;
+			// print(json);
+			// leaderboard.text = json;
 			Scores root = JsonUtility.FromJson<Scores>(json);
 			leaderboard.text = "";
 			for (int i = 0; i < root.datas.Length; i++)
@@ -143,5 +140,4 @@ public class NetworkManager : MonoBehaviour
 		}
 
 	}
-
 }

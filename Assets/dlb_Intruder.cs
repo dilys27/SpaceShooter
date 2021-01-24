@@ -4,83 +4,110 @@ using UnityEngine;
 
 public class dlb_Intruder : MonoBehaviour
 {
-	public int points = 10;
-	int life = 3;
+	public int dlb_points = 10;
+	int dlb_life = 3;
 
-    float maxPosX, maxPosY;
-	float minPosX, minPosY;
-	readonly float initialSpeed = 3f;
-	Vector2 speed;
-	//readonly float initialRotation = 100f;
-	//float rotation;
+	readonly float dlb_maxSpeed = 3f;
+	readonly float dlb_minSpeed = 1f;
+	float dlb_speed;
+	bool dlb_arret = true;
+	Bounds dlb_boundsAttackArea;
+	Vector3 dlb_target;
 
-	Rigidbody2D rb;
+	public GameObject dlb_projectile;
+	readonly float dlb_projectileSpeed = 4f;
+	readonly float dlb_fireRate = .25f;
+	float dlb_nextFire;
 
-	dlb_GameManager gameManager;
+	Rigidbody2D dlb_rb;
+
+	dlb_GameManager dlb_gameManager;
 
 	Camera cam;
 	float height, width;
 
 	void Start()
 	{
-		gameManager = GameObject.Find("GameManager").GetComponent<dlb_GameManager>();
+		dlb_gameManager = GameObject.Find("GameManager").GetComponent<dlb_GameManager>();
 
 		cam = Camera.main;
 		height = cam.orthographicSize;
 		width = height * cam.aspect;
 
-		// déterminer la vitesse x / y
-		float x = Random.Range(0, initialSpeed);
-		float y = Random.Range(0, initialSpeed);
-		speed = new Vector2(x, y);
+		dlb_speed = Random.Range(dlb_minSpeed, dlb_maxSpeed);
 
-		rb = GetComponent<Rigidbody2D>();
+		dlb_rb = GetComponent<Rigidbody2D>();
+		
+		dlb_boundsAttackArea = dlb_gameManager.dlb_attackArea.GetComponent<BoxCollider2D>().bounds;
 	}
 
-	private void FixedUpdate()
+	void Update()
 	{
-		StartCoroutine(dlb_Move());
+		if (dlb_GameManager.dlb_state == dlb_GameManager.States.play)
+		{
+			StartCoroutine(dlb_Move());
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.tag == "Player")
 		{
-			gameManager.KillPlayer();
+			dlb_gameManager.dlb_KillPlayer();
 		}
 		else if (collision.tag == "Bullet")
 		{
 			// détruire la bullet
 			Destroy(collision.gameObject);
 			// destruction
-			if(life>0)
+			if(dlb_life>0)
 			{
-				life -= 1;
+				dlb_life -= 1;
 			}else{
 				Destroy(gameObject);
 			}
 			// score
-			gameManager.AddScore(points);
+			dlb_gameManager.dlb_AddScore(dlb_points);
 		}
 	}
 
 	IEnumerator dlb_Move()
 	{
-		if(rb.position.y >= -height){
-			GetComponent<dlb_BlockScreen>().enabled = true;
-		} else {
-			yield return new WaitForSecondsRealtime(1f);
-			rb.velocity = speed;
-			//rb.MovePosition(rb.position + speed * Time.fixedDeltaTime);
-			Vector3 force = transform.TransformDirection(0, 0.5f* speed.y * Time.deltaTime, 0);
-			rb.AddForce(force);
+		if(dlb_arret) {
+			dlb_Fire();
+			yield return new WaitForSecondsRealtime(3f);
+			dlb_arret = false;
+			//nouveau point aléatoire de l'aire d'attaque pour s'y diriger
+			dlb_target = new Vector3(
+               Random.Range(dlb_boundsAttackArea.min.x, dlb_boundsAttackArea.max.x),
+               Random.Range(dlb_boundsAttackArea.min.y, dlb_boundsAttackArea.max.y),
+               0
+            );
+			dlb_target = dlb_gameManager.dlb_attackArea.GetComponent<BoxCollider2D>().ClosestPoint(dlb_target);
+	    } else {
+			//se diriger vers le point donné aléatoirement dans l'aire d'attaque du jeu et s'arrêter si atteint
+			float dlb_step = dlb_speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, dlb_target, dlb_step);
+			if(transform.position == dlb_target){
+				dlb_arret = true;
+			}
 		}
-		//transform.Translate(Vector2.up * speed.y * Time.deltaTime);
-		//rb.velocity = speed;
-		//Vector3 force = transform.TransformDirection(0, initialSpeed * Time.deltaTime, 0);
-		//rb.AddForce(force);
-		//rb.MovePosition(rb.position + speed * Time.fixedDeltaTime);
 	}
 
+	void dlb_Fire()
+	{
+		dlb_nextFire += Time.deltaTime;
+		if (dlb_nextFire > dlb_fireRate)
+		{
+			dlb_Shoot();
+			dlb_nextFire = 0;
+		}
+	}
+
+	void dlb_Shoot()
+	{
+		GameObject bullet = Instantiate(dlb_projectile, transform.position, transform.rotation);
+		bullet.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(0, dlb_projectileSpeed, 0);
+	}
 
 }

@@ -4,74 +4,59 @@ using UnityEngine;
 
 public class dlb_Player : MonoBehaviour
 {
-	readonly float speed = 10f;
-	float moveHorizontal;
-	//readonly float drag = 1; // résistance
+	readonly float dlb_speed = 10f;
+	float dlb_moveHorizontal;
 
-	// pouvoir tirer
-	public GameObject projectile;
-	readonly float projectileSpeed = 4f;
+	public GameObject dlb_projectile;
+	readonly float dlb_projectileSpeed = 4f;
+	readonly float dlb_fireRate = .25f;
+	float dlb_nextFire;
 
-	// controler la fréquence de tir
-	readonly float fireRate = .25f;
-	float nextFire;
+	Rigidbody2D dlb_rb;
 
-	Rigidbody2D rb;
-
-	dlb_GameManager gameManager;
+	dlb_GameManager dlb_gameManager;
 
 	void Start()
 	{
-		rb = GetComponent<Rigidbody2D>();
-		//rb.drag = drag;
+		dlb_gameManager = GameObject.Find("GameManager").GetComponent<dlb_GameManager>();
+
+		dlb_rb = GetComponent<Rigidbody2D>();
 	}
 
 	void Update()
 	{
-		if (dlb_GameManager.state == dlb_GameManager.States.play)
+		if (dlb_GameManager.dlb_state == dlb_GameManager.States.play)
 		{
-			Move();
-			Fire();
+			dlb_Move();
+			dlb_Fire();
 		}
 	}
 
-	void Fire()
+	void dlb_Fire()
 	{
-		nextFire += Time.deltaTime;
-		if (Input.GetButton("Fire1") && nextFire > fireRate)
+		dlb_nextFire += Time.deltaTime;
+		if (Input.GetButton("Fire1") && dlb_nextFire > dlb_fireRate)
 		{
-			Shoot();
-			nextFire = 0;
+			dlb_Shoot();
+			dlb_nextFire = 0;
 		}
 	}
 
-	void Shoot()
+	void dlb_Shoot()
 	{
-		GameObject bullet = Instantiate(projectile, transform.position, transform.rotation);
-		bullet.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(0, projectileSpeed, 0);
+		GameObject dlb_bullet = Instantiate(dlb_projectile, transform.position, transform.rotation);
+		dlb_bullet.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(0, dlb_projectileSpeed, 0);
 	}
 
-	/*void Turn()
+	void dlb_Move()
 	{
-		rotation = Input.GetAxisRaw("Horizontal");
-		transform.Rotate(0, 0, rotation * Time.deltaTime * rotationSpeed * -1);
-	}*/
-
-	void Move()
-	{
-		moveHorizontal = Input.GetAxisRaw("Horizontal");
-
-		/*thrust = Input.GetAxisRaw("Vertical");
-		if (thrust < 0)
-		{
-			thrust = 0; // rb.drag += Mathf.Abs(thrust);
-		}*/
+		dlb_moveHorizontal = Input.GetAxisRaw("Horizontal");
 	}
 
 	private void FixedUpdate()
 	{
-		Vector3 force = transform.TransformDirection(-moveHorizontal * speed, 0, 0);
-		rb.AddForce(force);
+		Vector3 dlb_force = transform.TransformDirection(-dlb_moveHorizontal * dlb_speed, 0, 0);
+		dlb_rb.AddForce(dlb_force);
 	}
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -80,7 +65,7 @@ public class dlb_Player : MonoBehaviour
 		{
 			// détruire la bullet
 			Destroy(collision.gameObject);
-			gameManager.KillPlayer();
+			dlb_gameManager.dlb_KillPlayer();
 		}
 	}
 

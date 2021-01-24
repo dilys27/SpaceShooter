@@ -9,93 +9,94 @@ public class dlb_GameManager : MonoBehaviour
 	{
 		wait, play, nextWave, dead
 	}
-	public static States state;
+	public static States dlb_state;
 
-	int wave;
-	int score;
-	int lives;
+	int dlb_wave;
+	int dlb_score;
+	int dlb_lives;
 
-	public Text waveTxt;
-	public Text scoreTxt;
-	public Text livesTxt;
+	public Text dlb_waveTxt;
+	public Text dlb_scoreTxt;
+	public Text dlb_livesTxt;
 
-	public Text messageTxt;
+	public Text dlb_messageTxt;
 
-	GameObject player;
-	public GameObject intruder; // le prefab
-	public GameObject boom;
+	GameObject dlb_player;
+	public GameObject dlb_intruder; // le prefab
+	public GameObject dlb_boom;
 
 	Camera cam;
 	float height, width;
 
-	public GameObject waitToStart; // panel
+	public GameObject dlb_waitToStart; // panel
 
-	public GameObject networkPanel;
+	public GameObject dlb_networkPanel;
 
-	NetworkManager networkManager;
+	dlb_NetworkManager dlb_networkManager;
 
-	public GameObject spawnArea;
-	float widthArea;
-	float xArea, yArea;
+	public GameObject dlb_spawnArea;
+	float dlb_widthArea;
+	float dlb_xArea, dlb_yArea;
 
+	public GameObject dlb_attackArea;
 
 	void Start()
 	{
-		networkManager = GetComponent<NetworkManager>();
-		networkPanel.gameObject.SetActive(true);
+		dlb_networkManager = GetComponent<dlb_NetworkManager>();
+		dlb_networkPanel.gameObject.SetActive(true);
 
-		messageTxt.gameObject.SetActive(false);
+		dlb_messageTxt.gameObject.SetActive(false);
 
-		player = GameObject.FindWithTag("Player");
+		dlb_player = GameObject.FindWithTag("Player");
 
 		cam = Camera.main;
 		height = cam.orthographicSize;
 		width = height * cam.aspect;
 
-		waitToStart.gameObject.SetActive(true);
+		dlb_waitToStart.gameObject.SetActive(true);
 		int highscore = PlayerPrefs.GetInt("highscore");
 		if (highscore > 0)
 		{
-			messageTxt.text = "highscore: " + highscore;
-			messageTxt.gameObject.SetActive(true);
+			dlb_messageTxt.text = "highscore: " + highscore;
+			dlb_messageTxt.gameObject.SetActive(true);
 		}
 
-		widthArea = spawnArea.GetComponent<BoxCollider2D>().bounds.size.x;
-		xArea = spawnArea.transform.position.x;
-		yArea = spawnArea.transform.position.y;
+		dlb_widthArea = dlb_spawnArea.GetComponent<BoxCollider2D>().bounds.size.x;
+		dlb_xArea = dlb_spawnArea.transform.position.x;
+		dlb_yArea = dlb_spawnArea.transform.position.y;
 
-		state = States.wait;
+		dlb_state = States.wait;
 	}
 
 	public void LaunchGame()
 	{
 		// interface
-		networkPanel.gameObject.SetActive(false);
-		waitToStart.gameObject.SetActive(false);
-		messageTxt.gameObject.SetActive(false);
+		dlb_networkPanel.gameObject.SetActive(false);
+		dlb_waitToStart.gameObject.SetActive(false);
+		dlb_messageTxt.gameObject.SetActive(false);
 		// restaurer après une partie
-		player.SetActive(true);
+		dlb_player.SetActive(true);
 		GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
 		foreach (GameObject enemy in enemys)
 		{
 			Destroy(enemy);
 		}
 		// lancer une partie
-		InitGame();
-		LoadWave();
-		UpdateTexts();
+		dlb_InitGame();
+		dlb_LoadWave();
+		dlb_UpdateTexts();
 	}
 
-	void InitGame()
+	void dlb_InitGame()
 	{
-		wave = 1;
-		score = 0;
-		lives = 5;
+		dlb_wave = 1;
+		dlb_score = 0;
+		dlb_lives = 5;
 	}
 
-	void LoadWave()
+	void dlb_LoadWave()
 	{
-		state = States.play;
+		dlb_state = States.play;
 
 		// instancier 3 ennemis (selon la vague: 2 + wave)
 		// - savoir ce qu'est un ennemi (public ...)
@@ -104,110 +105,110 @@ public class dlb_GameManager : MonoBehaviour
 
 		for (int i = 0; i < 3; i++)
 		{
-			float x = xArea + Random.Range(-widthArea/2, widthArea/2);
-			float y = yArea;
-			Instantiate(intruder, new Vector2(x, y), Quaternion.identity);
+			float x = dlb_xArea + Random.Range(-dlb_widthArea/3, dlb_widthArea/3);
+			float y = dlb_yArea;
+			Instantiate(dlb_intruder, new Vector2(x, y), Quaternion.identity);
 		}
 		
 	}
 
-	void UpdateTexts()
+	void dlb_UpdateTexts()
 	{
-		waveTxt.text = "wave: " + wave;
-		scoreTxt.text = "score: " + score;
-		livesTxt.text = "lives: " + lives;
+		dlb_waveTxt.text = "wave: " + dlb_wave;
+		dlb_scoreTxt.text = "score: " + dlb_score;
+		dlb_livesTxt.text = "lives: " + dlb_lives;
 	}
 
 
-	public void AddScore(int points)
+	public void dlb_AddScore(int points)
 	{
-		score += points;
-		UpdateTexts();
+		dlb_score += points;
+		dlb_UpdateTexts();
 	}
 
 	private void Update()
 	{
-		if (state == States.play)
+		if (dlb_state == States.play)
 		{
-			EndOfWave();
+			dlb_EndOfWave();
 		}
 	}
 
 
-	void EndOfWave()
+	void dlb_EndOfWave()
 	{
 		GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
 		if (enemys.Length == 0)
 		{
-			StartCoroutine(NextWave());
+			StartCoroutine(dlb_NextWave());
 		}
 	}
 
-	IEnumerator NextWave()
+	IEnumerator dlb_NextWave()
 	{
-		state = States.nextWave;
+		dlb_state = States.nextWave;
 		// afficher message "Next Wave"
-		messageTxt.text = "Next Wave";
-		messageTxt.gameObject.SetActive(true);
+		dlb_messageTxt.text = "Next Wave";
+		dlb_messageTxt.gameObject.SetActive(true);
 		// marquer une pause
 		yield return new WaitForSecondsRealtime(3f);
 		// cacher le message
-		messageTxt.gameObject.SetActive(false);
-		wave += 1;
-		LoadWave();
-		UpdateTexts();
+		dlb_messageTxt.gameObject.SetActive(false);
+		dlb_wave += 1;
+		dlb_LoadWave();
+		dlb_UpdateTexts();
 	}
 
 
-	public void KillPlayer()
+	public void dlb_KillPlayer()
 	{
-		StartCoroutine(PlayerAgain());
+		StartCoroutine(dlb_PlayerAgain());
 	}
 
-	IEnumerator PlayerAgain()
+	IEnumerator dlb_PlayerAgain()
 	{
-		state = States.dead;
+		dlb_state = States.dead;
 
-		GameObject boomGO = Instantiate(boom, player.transform.position, Quaternion.identity);
+		GameObject dlb_boomGO = Instantiate(dlb_boom, dlb_player.transform.position, Quaternion.identity);
 
-		lives -= 1;
-		player.SetActive(false);
-		UpdateTexts();
-		if (lives <= 0)
+		dlb_lives -= 1;
+		dlb_player.SetActive(false);
+		dlb_UpdateTexts();
+		if (dlb_lives <= 0)
 		{
 			yield return new WaitForSecondsRealtime(2f);
-			Destroy(boomGO);
-			GameOver();
+			Destroy(dlb_boomGO);
+			dlb_GameOver();
 		}
 		else
 		{
 			yield return new WaitForSecondsRealtime(3f);
-			Destroy(boomGO);
-			player.SetActive(true);
-			state = States.play;
+			Destroy(dlb_boomGO);
+			dlb_player.SetActive(true);
+			dlb_state = States.play;
 		}
 	}
 
-	void GameOver()
+	void dlb_GameOver()
 	{
-		state = States.wait;
+		dlb_state = States.wait;
 
 		int highscore = PlayerPrefs.GetInt("highscore");
-		if (score > highscore)
+		if (dlb_score > highscore)
 		{
-			PlayerPrefs.SetInt("highscore", score);
-			messageTxt.text = "new highscore: " + score;
+			PlayerPrefs.SetInt("highscore", dlb_score);
+			dlb_messageTxt.text = "new highscore: " + dlb_score;
 		}
 		else
 		{
-			messageTxt.text = "game over\nhighscore: " + highscore;
+			dlb_messageTxt.text = "game over\nhighscore: " + highscore;
 		}
 
-		networkManager.SendScore(score);
-		networkPanel.gameObject.SetActive(true);
+		dlb_networkManager.SendScore(dlb_score);
+		dlb_networkPanel.gameObject.SetActive(true);
 
-		messageTxt.gameObject.SetActive(true);
-		waitToStart.gameObject.SetActive(true);
+		dlb_messageTxt.gameObject.SetActive(true);
+		dlb_waitToStart.gameObject.SetActive(true);
 	}
 
 

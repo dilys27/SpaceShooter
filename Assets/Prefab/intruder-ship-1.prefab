@@ -281,4 +281,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006e4ebc4f8b54b2fbc060529745df5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  points: 10
+  dlb_points: 10
+  dlb_projectile: {fileID: 2094670783706457586, guid: 9aca0a5a2c0b3445f8bd29351d2f6163, type: 3}
