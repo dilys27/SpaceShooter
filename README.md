@@ -9,7 +9,7 @@
  - Toutes les classes et leurs méthodes que vous créez doivent débuter par vos initiales suivi d’un _ (Ne concerne pas les méthodes standard, telles Start(), Update()...)
  - Utilisation d’Unity 2020.2.1
  - Travail individuel
- - Utilisation du jeu réalisé, Asteroids en cours comme base de travail
+ - Utilisation du jeu Asteroids, réalisé en cours, comme base de travail
 
 ## UML simplifié
 
