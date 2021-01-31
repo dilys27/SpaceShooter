@@ -10,14 +10,17 @@ public class dlb_Intruder : MonoBehaviour
 	readonly float dlb_maxSpeed = 3f;
 	readonly float dlb_minSpeed = 1f;
 	float dlb_speed;
-	bool dlb_arret = true;
-	Bounds dlb_boundsAttackArea;
-	Vector3 dlb_target;
+	bool dlb_arret = true; // l'ennemi est à l'arrêt au début de la vague
+	Bounds dlb_boundsAttackArea; // limites de l'espace d'attaque des ennemis
+	Vector3 dlb_target; // pos cible pour le déplacement auto des ennemis
 
 	public GameObject dlb_projectile;
 	readonly float dlb_projectileSpeed = 4f;
-	readonly float dlb_fireRate = .25f;
+	readonly float dlb_fireRate = .50f;
 	float dlb_nextFire;
+
+	public GameObject dlb_capsule;
+	readonly float dlb_capsuleSpeed = 2f;
 
 	Rigidbody2D dlb_rb;
 
@@ -64,6 +67,7 @@ public class dlb_Intruder : MonoBehaviour
 			{
 				dlb_life -= 1;
 			}else{
+				dlb_LastEnemy(); //instancie la capsule si c'est le dernier ennemi présent de la vague
 				Destroy(gameObject);
 			}
 			// score
@@ -74,7 +78,10 @@ public class dlb_Intruder : MonoBehaviour
 	IEnumerator dlb_Move()
 	{
 		if(dlb_arret) {
-			dlb_Fire();
+			if (transform.position.y >= -height) // vérifie si l'ennemi est bien arrivé dans l'écran avant de commencer à tirer
+			{
+				dlb_Fire();
+			}
 			yield return new WaitForSecondsRealtime(3f);
 			dlb_arret = false;
 			//nouveau point aléatoire de l'aire d'attaque pour s'y diriger
@@ -108,6 +115,16 @@ public class dlb_Intruder : MonoBehaviour
 	{
 		GameObject bullet = Instantiate(dlb_projectile, transform.position, transform.rotation);
 		bullet.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(0, dlb_projectileSpeed, 0);
+	}
+
+	void dlb_LastEnemy()
+	{
+		GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
+		if (enemys.Length == 1)
+		{
+			GameObject capsule = Instantiate(dlb_capsule, transform.position, transform.rotation);
+			capsule.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(0, dlb_capsuleSpeed, 0);
+		}
 	}
 
 }

@@ -34,7 +34,7 @@ public class dlb_GameManager : MonoBehaviour
 
 	dlb_NetworkManager dlb_networkManager;
 
-	public GameObject dlb_spawnArea;
+	public GameObject dlb_spawnArea; // espace en dehors de l'écran pour l'apparition des ennemis
 	float dlb_widthArea;
 	float dlb_xArea, dlb_yArea;
 
@@ -98,12 +98,13 @@ public class dlb_GameManager : MonoBehaviour
 	{
 		dlb_state = States.play;
 
-		// instancier 3 ennemis (selon la vague: 2 + wave)
+		// instancier 3 à 5 ennemis
 		// - savoir ce qu'est un ennemi (public ...)
-		// - faire une boucle 1 à 3
+		// - faire une boucle 1 à nb aléatoire
 		//   instancier un ennemi : dans les limites de la spawn area (en dehors de l'écran)
 
-		for (int i = 0; i < 3; i++)
+		int nb = Random.Range(3, 5);
+		for (int i = 0; i < nb; i++)
 		{
 			float x = dlb_xArea + Random.Range(-dlb_widthArea/3, dlb_widthArea/3);
 			float y = dlb_yArea;
@@ -133,7 +134,6 @@ public class dlb_GameManager : MonoBehaviour
 			dlb_EndOfWave();
 		}
 	}
-
 
 	void dlb_EndOfWave()
 	{
