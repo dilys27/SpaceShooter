@@ -9,9 +9,30 @@
  - Toutes les classes et leurs méthodes que vous créez doivent débuter par vos initiales suivi d’un _ (Ne concerne pas les méthodes standard, telles Start(), Update()...)
  - Utilisation d’Unity 2020.2.1
  - Travail individuel
- - Utilisation du jeu Asteroids, réalisé en cours, comme base de travail
+ - Utilisation du jeu réalisé, Asteroids en cours comme base de travail
+
+## Pour jouer
+
+ 1. Pour se déplacer : 
+ flèches gauche et droite
+ 2. Pour tirer : 
+ touche CTRL ou clic gauche de la souris
 
 ## UML simplifié
+
+*dlb_Ship*
+- 
+- initialSpeed: float
+- projectile: GameObject
+- projectileSpeed: float
+- fireRate: float
+- nextFire: float
+- rb: Rigibody2D
+- Start(): void
+- Update(): void
+- dlb_Move(): void
+- dlb_Fire(): void
+- dlb_Shoot(): void 
 
 *dlb_Player*
 - 
@@ -99,3 +120,6 @@
 *dlb_NetworkManager*
 - 
 - 
+
+## Assets Sprites
+https://www.kenney.nl/assets/space-shooter-extension
