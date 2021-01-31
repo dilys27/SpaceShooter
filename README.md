@@ -14,9 +14,11 @@
 ## Pour jouer
 
  1. Pour se déplacer : 
- flèches gauche et droite
+ utiliser les **flèches gauche et droite**
  2. Pour tirer : 
- touche CTRL ou clic gauche de la souris
+ touche **CTRL** ou **clic gauche de la souris**
+ 3. Mettre en pause / reprendre :
+ touche **P**
 
 ## UML simplifié
 
